@@ -41,7 +41,7 @@
                 return nRow;
             },
             "aoColumns": [
-                {"bSortable": false, "mRender": checkbox}, {"bSortable": false,"mRender": img_hl}, null, null, null, null, <?php if ($Owner || $Admin) {
+                {"bSortable": false, "mRender": checkbox}, {"bSortable": false,"mRender": img_hl}, null, null, null, null,null,null,null, <?php if ($Owner || $Admin) {
                     echo '{"mRender": currencyFormat}, {"mRender": currencyFormat},';
                                                                                                                            } else {
                                                                                                                                if ($this->session->userdata('show_cost')) {
@@ -75,9 +75,17 @@
                     $col++;
                     echo '{column_number : ' . $col . ', filter_default_label: "[' . lang('price') . ']", filter_type: "text, data: []" },';
                 }
+				
             }
             ?>
-
+			 {column_number: <?php $col++;
+            echo $col; ?>, filter_default_label: "[<?=lang('price2');?>]", filter_type: "text", data: []},
+			{column_number: <?php $col++;
+            echo $col; ?>, filter_default_label: "[<?=lang('price3');?>]", filter_type: "text", data: []},
+			{column_number: <?php $col++;
+            echo $col; ?>, filter_default_label: "[<?=lang('price4');?>]", filter_type: "text", data: []},
+			{column_number: <?php $col++;
+            echo $col; ?>, filter_default_label: "[<?=lang('pricelocal');?>]", filter_type: "text", data: []},
             {column_number: <?php $col++;
             echo $col; ?>, filter_default_label: "[<?=lang('quantity');?>]", filter_type: "text", data: []},
             {column_number: <?php $col++;
@@ -199,7 +207,10 @@
                                 }
                             }
                             ?>
-                            <th><?= lang('Precio 2') ?></th>
+                            <th><?= lang('price2') ?></th>
+                            <th><?= lang('price3') ?></th>
+                            <th><?= lang('price4') ?></th>
+                            <th><?= lang('pricelocal') ?></th>
                             <th><?= lang('quantity') ?></th>
                             <th><?= lang('unit') ?></th>
                             <th><?= lang('rack') ?></th>
@@ -236,6 +247,10 @@
                                 }
                             }
                             ?>
+                            <th></th><!-- precio 2-->
+                            <th></th><!-- precio 3-->
+                            <th></th><!-- precio 4-->
+                            <th></th><!-- precio local-->
                             <th></th>
                             <th></th>
                             <th></th>

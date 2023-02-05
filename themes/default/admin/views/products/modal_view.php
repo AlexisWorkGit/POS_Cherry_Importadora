@@ -81,6 +81,10 @@
                                     <?php if ($Owner || $Admin) {
                             echo '<tr><td>' . lang('cost') . '</td><td>' . $this->sma->formatMoney($product->cost) . '</td></tr>';
                             echo '<tr><td>' . lang('price') . '</td><td>' . $this->sma->formatMoney($product->price) . '</td></tr>';
+                            echo '<tr><td>' . lang('price2') . '</td><td>' . $this->sma->formatMoney($product->price2) . '</td></tr>';
+                            echo '<tr><td>' . lang('price3') . '</td><td>' . $this->sma->formatMoney($product->price3) . '</td></tr>';
+                            echo '<tr><td>' . lang('price4') . '</td><td>' . $this->sma->formatMoney($product->price4) . '</td></tr>';
+                            echo '<tr><td>' . lang('pricelocal') . '</td><td>' . $this->sma->formatMoney($product->pricelocal) . '</td></tr>';
                             if ($product->promotion) {
                                 echo '<tr><td>' . lang('promotion') . '</td><td>' . $this->sma->formatMoney($product->promo_price) . ' (' . $this->sma->hrsd($product->start_date) . ' - ' . $this->sma->hrsd($product->end_date) . ')</td></tr>';
                             }

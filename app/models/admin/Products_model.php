@@ -59,9 +59,12 @@ class Products_model extends CI_Model
 
     public function addProduct($data, $items, $warehouse_qty, $product_attributes, $photos)
     {
+/*echo "<pre>";
+  print_r($data);
+echo "</pre>";*/
         if ($this->db->insert('products', $data)) {
             $product_id = $this->db->insert_id();
-
+//echo $this->db->last_query();exit;
             if ($items) {
                 foreach ($items as $item) {
                     $item['product_id'] = $product_id;

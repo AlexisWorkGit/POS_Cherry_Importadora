@@ -130,6 +130,7 @@ if (!empty($variants)) {
                         <?= lang('brand', 'brand') ?>
                         <?php
                         $br[''] = '';
+						if(!empty($brands))
                         foreach ($brands as $brand) {
                             $br[$brand->id] = $brand->name;
                         }
@@ -181,20 +182,20 @@ if (!empty($variants)) {
                         <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price) : '')), 'class="form-control tip" id="price" required="required"') ?>
                     </div>
                     <div class="form-group all">
-                        <?= lang('product_price', 'price2') ?>
-                        <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price2) : '')), 'class="form-control tip" id="price2" required="required"') ?>
+                        <?= lang('product_price2', 'price2') ?>
+                        <?= form_input('price2', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price2) : '')), 'class="form-control tip" id="price2" required="required"') ?>
                     </div>
                     <div class="form-group all">
-                        <?= lang('product_price', 'price3') ?>
-                        <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price3) : '')), 'class="form-control tip" id="price3" required="required"') ?>
+                        <?= lang('product_price3', 'price3') ?>
+                        <?= form_input('price3', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price3) : '')), 'class="form-control tip" id="price3" required="required"') ?>
                     </div>
                     <div class="form-group all">
-                        <?= lang('product_price', 'price4') ?>
-                        <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price4) : '')), 'class="form-control tip" id="price4" required="required"') ?>
+                        <?= lang('product_price4', 'price4') ?>
+                        <?= form_input('price4', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price4) : '')), 'class="form-control tip" id="price4" required="required"') ?>
                     </div>
                     <div class="form-group all">
-                        <?= lang('product_price', 'pricelocal') ?>
-                        <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->pricelocal) : '')), 'class="form-control tip" id="pricelocal" required="required"') ?>
+                        <?= lang('product_pricelocal', 'pricelocal') ?>
+                        <?= form_input('pricelocal', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->pricelocal) : '')), 'class="form-control tip" id="pricelocal" required="required"') ?>
                     </div>
 
                     <div class="form-group">
