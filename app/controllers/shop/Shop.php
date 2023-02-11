@@ -558,6 +558,7 @@ class Shop extends MY_Shop_Controller
     // Products,  categories and brands page
     public function products($category_slug = null, $subcategory_slug = null, $brand_slug = null, $promo = null)
     {
+
         $this->session->set_userdata('requested_page', $this->uri->uri_string());
         if ($this->input->get('category')) {
             $category_slug = $this->input->get('category', true);
@@ -587,7 +588,9 @@ class Shop extends MY_Shop_Controller
         $this->data['error']      = (validation_errors()) ? validation_errors() : $this->session->flashdata('error');
         $this->data['page_title'] = (!empty($filters['category']) ? $filters['category']->name : (!empty($filters['brand']) ? $filters['brand']->name : lang('products'))) . ' - ' . $this->shop_settings->shop_name;
         $this->data['page_desc']  = !empty($filters['category']) ? $filters['category']->description : (!empty($filters['brand']) ? $filters['brand']->description : $this->shop_settings->products_description);
+		
         $this->page_construct('pages/products', $this->data);
+
     }
 
     // Customer quotations
@@ -652,6 +655,7 @@ class Shop extends MY_Shop_Controller
     // Search products page - ajax
     public function search()
     {
+
         $filters           = $this->input->post('filters') ? $this->input->post('filters', true) : false;
         $limit             = 12;
         $total_rows        = $this->shop_model->getProductsCount($filters);

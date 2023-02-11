@@ -12,6 +12,7 @@ $(function () {
         });
     });
     $(document).on('click', '.add-to-cart', function (e) {
+        alert()
         e.preventDefault();
         var id = $(this).attr('data-id');
         var cart = $('.shopping-cart:visible');

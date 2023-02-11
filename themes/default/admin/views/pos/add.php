@@ -1603,6 +1603,7 @@ var lang = {
             pi = $(this).attr('id');
             calculateTotals();
         }).on('blur', '.amount', function () {
+		
             calculateTotals();
         });
 
@@ -1633,6 +1634,7 @@ var lang = {
         }
 
         $("#add_item").autocomplete({
+
             source: function (request, response) {
                 if (!$('#poscustomer').val()) {
                     $('#add_item').val('').removeClass('ui-autocomplete-loading');
@@ -1717,6 +1719,7 @@ var lang = {
         $('select, .select').select2({minimumResultsForSearch: 7});
 
         $(document).on('click', '.product', function (e) {
+
             $('#modal-loading').show();
             code = $(this).val(),
                 wh = $('#poswarehouse').val(),
@@ -1755,97 +1758,7 @@ var lang = {
             });
         });
 
-        $(document).on('click', '.category', function () {
-            if (cat_id != $(this).val()) {
-                $('#open-category').click();
-                $('#modal-loading').show();
-                cat_id = $(this).val();
-                $.ajax({
-                    type: "get",
-                    url: "<?=admin_url('pos/ajaxcategorydata');?>",
-                    data: {category_id: cat_id},
-                    dataType: "json",
-                    success: function (data) {
-                        $('#item-list').empty();
-                        var newPrs = $('<div></div>');
-                        newPrs.html(data.products);
-                        newPrs.appendTo("#item-list");
-                        $('#subcategory-list').empty();
-                        var newScs = $('<div></div>');
-                        newScs.html(data.subcategories);
-                        newScs.appendTo("#subcategory-list");
-                        tcp = data.tcp;
-                        nav_pointer();
-                    }
-                }).done(function () {
-                    p_page = 'n';
-                    $('#category-' + cat_id).addClass('active');
-                    $('#category-' + ocat_id).removeClass('active');
-                    ocat_id = cat_id;
-                    $('#modal-loading').hide();
-                    nav_pointer();
-                });
-            }
-        });
-        $('#category-' + cat_id).addClass('active');
-
-        $(document).on('click', '.brand', function () {
-            if (brand_id != $(this).val()) {
-                $('#open-brands').click();
-                $('#modal-loading').show();
-                brand_id = $(this).val();
-                $.ajax({
-                    type: "get",
-                    url: "<?=admin_url('pos/ajaxbranddata');?>",
-                    data: {brand_id: brand_id},
-                    dataType: "json",
-                    success: function (data) {
-                        $('#item-list').empty();
-                        var newPrs = $('<div></div>');
-                        newPrs.html(data.products);
-                        newPrs.appendTo("#item-list");
-                        tcp = data.tcp;
-                        nav_pointer();
-                    }
-                }).done(function () {
-                    p_page = 'n';
-                    $('#brand-' + brand_id).addClass('active');
-                    $('#brand-' + obrand_id).removeClass('active');
-                    obrand_id = brand_id;
-                    $('#category-' + cat_id).removeClass('active');
-                    $('#subcategory-' + sub_cat_id).removeClass('active');
-                    cat_id = 0; sub_cat_id = 0;
-                    $('#modal-loading').hide();
-                    nav_pointer();
-                });
-            }
-        });
-
-        $(document).on('click', '.subcategory', function () {
-            if (sub_cat_id != $(this).val()) {
-                $('#open-subcategory').click();
-                $('#modal-loading').show();
-                sub_cat_id = $(this).val();
-                $.ajax({
-                    type: "get",
-                    url: "<?=admin_url('pos/ajaxproducts');?>",
-                    data: {category_id: cat_id, subcategory_id: sub_cat_id, per_page: p_page != 0 ? p_page : 'n' },
-                    dataType: "html",
-                    success: function (data) {
-                        $('#item-list').empty();
-                        var newPrs = $('<div></div>');
-                        newPrs.html(data);
-                        newPrs.appendTo("#item-list");
-                    }
-                }).done(function () {
-                    p_page = 'n';
-                    $('#subcategory-' + sub_cat_id).addClass('active');
-                    $('#subcategory-' + osub_cat_id).removeClass('active');
-                    $('#modal-loading').hide();
-                });
-            }
-        });
-
+       
         $('#next').click(function () {
             if (p_page == 'n') {
                 p_page = 0
@@ -1902,154 +1815,15 @@ var lang = {
             }
         });
 
-        $(document).on('change', '.paid_by', function () {
-            console.log(this);
-            // $('#clear-cash-notes').click();
-            // $('#amount_1').val(grand_total);
-            var p_val = $(this).val(),
-                id = $(this).attr('id');
-            pa_no = id.substr(id.length - 1);
-                var total_added = 0;
-                for (let index = 1; index < 6; index++) {
-                    if (pa_no != index) {
-                        total_added += parseFloat($('#amount_'+index).val() ? $('#amount_'+index).val() : 0);
-                    }
-                }
-                var bal = parseFloat(parseFloat(grand_total) - parseFloat(total_added));
-                $('#amount_' + pa_no).val(bal);
-            $('#rpaidby').val(p_val);
-            if (p_val == 'cash' || p_val == 'other') {
-                $('.pcheque_' + pa_no).hide();
-                $('.pcc_' + pa_no).hide();
-                $('.pcash_' + pa_no).show();
-                $('#amount_' + pa_no).focus();
-            } else if (p_val == 'CC' || p_val == 'stripe' || p_val == 'ppp' || p_val == 'authorize') {
-                $('.pcheque_' + pa_no).hide();
-                $('.pcash_' + pa_no).hide();
-                $('.pcc_' + pa_no).show();
-                $('#swipe_' + pa_no).focus();
-            } else if (p_val == 'Cheque') {
-                $('.pcc_' + pa_no).hide();
-                $('.pcash_' + pa_no).hide();
-                $('.pcheque_' + pa_no).show();
-                $('#cheque_no_' + pa_no).focus();
-            } else {
-                $('.pcheque_' + pa_no).hide();
-                $('.pcc_' + pa_no).hide();
-                $('.pcash_' + pa_no).hide();
-            }
-            if (p_val == 'gift_card') {
-                $('.gc_' + pa_no).show();
-                $('.ngc_' + pa_no).hide();
-                $('#gift_card_no_' + pa_no).focus();
-            } else {
-                $('.ngc_' + pa_no).show();
-                $('.gc_' + pa_no).hide();
-                $('#gc_details_' + pa_no).html('');
-            }
-        });
+        
 
-        $(document).on('click', '#submit-sale', function () {
-            if (total_paid == 0 || total_paid < grand_total) {
-                bootbox.confirm("<?=lang('paid_l_t_payable');?>", function (res) {
-                    if (res == true) {
-                        $('#pos_note').val(localStorage.getItem('posnote'));
-                        $('#staff_note').val(localStorage.getItem('staffnote'));
-                        $('#submit-sale').text('<?=lang('loading');?>').attr('disabled', true);
-                        $('#pos-sale-form').submit();
-                    }
-                });
-                return false;
-            } else {
-                $('#pos_note').val(localStorage.getItem('posnote'));
-                $('#staff_note').val(localStorage.getItem('staffnote'));
-                $(this).text('<?=lang('loading');?>').attr('disabled', true);
-                $('#pos-sale-form').submit();
-            }
-        });
-        $('#suspend').click(function () {
-            if (count <= 1) {
-                bootbox.alert('<?=lang('x_suspend');?>');
-                return false;
-            } else {
-                $('#susModal').modal();
-            }
-        });
-        $('#suspend_sale').click(function () {
-            ref = $('#reference_note').val();
-            if (!ref || ref == '') {
-                bootbox.alert('<?=lang('type_reference_note');?>');
-                return false;
-            } else {
-                suspend = $('<span></span>');
-                <?php if ($sid) {
-            ?>
-                suspend.html('<input type="hidden" name="delete_id" value="<?php echo $sid; ?>" /><input type="hidden" name="suspend" value="yes" /><input type="hidden" name="suspend_note" value="' + ref + '" />');
-                <?php
-        } else {
-            ?>
-                suspend.html('<input type="hidden" name="suspend" value="yes" /><input type="hidden" name="suspend_note" value="' + ref + '" />');
-                <?php
-        }
-                ?>
-                suspend.appendTo("#hidesuspend");
-                $('#total_items').val(count - 1);
-                $('#pos-sale-form').submit();
-
-            }
-        });
+        
+        
     });
 
-    $(document).ready(function () {
-        $('#print_order').click(function () {
-            if (count == 1) {
-                bootbox.alert('<?=lang('x_total');?>');
-                return false;
-            }
-            <?php if ($pos_settings->remote_printing != 1) {
-                    ?>
-                printOrder();
-            <?php
-                } else {
-                    ?>
-                Popup($('#order_tbl').html());
-            <?php
-                } ?>
-        });
-        $('#print_bill').click(function () {
-            if (count == 1) {
-                bootbox.alert('<?=lang('x_total');?>');
-                return false;
-            }
-            <?php if ($pos_settings->remote_printing != 1) {
-                    ?>
-                printBill();
-            <?php
-                } else {
-                    ?>
-                Popup($('#bill_tbl').html());
-            <?php
-                } ?>
-        });
-    });
+   
 
-    $(function () {
-        $(".alert").effect("shake");
-        setTimeout(function () {
-            $(".alert").hide('blind', {}, 500)
-        }, 15000);
-        <?php if ($pos_settings->display_time) {
-                    ?>
-        var now = new moment();
-        $('#display_time').text(now.format((site.dateFormats.js_sdate).toUpperCase() + " HH:mm"));
-        setInterval(function () {
-            var now = new moment();
-            $('#display_time').text(now.format((site.dateFormats.js_sdate).toUpperCase() + " HH:mm"));
-        }, 1000);
-        <?php
-                }
-        ?>
-    });
+    
     <?php if ($pos_settings->remote_printing == 1) {
             ?>
     function Popup(data) {
@@ -2084,7 +1858,7 @@ var lang = {
 <script type="text/javascript" src="<?=$assets?>js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="<?=$assets?>pos/js/plugins.min.js"></script>
 <script type="text/javascript" src="<?=$assets?>pos/js/parse-track-data.js"></script>
-<script type="text/javascript" src="<?=$assets?>pos/js/pos.ajax.js"></script>
+<script type="text/javascript" src="<?=$assets?>pos/js/pos.ajax.js?<?=rand(999999,9999)?>"></script>
 <?php
 if (!$pos_settings->remote_printing) {
     ?>
@@ -2219,6 +1993,6 @@ if (isset($print) && !empty($print)) {
     include 'remote_printing.php';
 }
 ?>
-<script type="text/javascript" src="<?= base_url('assets/custom/pos.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('assets/custom/pos.js?'.rand(9999,999999)) ?>"></script>
 </body>
 </html>

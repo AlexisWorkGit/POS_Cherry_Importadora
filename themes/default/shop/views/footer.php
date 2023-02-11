@@ -134,7 +134,7 @@
 <?php
     } ?>
 <script src="<?= $assets; ?>js/libs.min.js"></script>
-<script src="<?= $assets; ?>js/scripts.min.js"></script>
+<script src="<?= $assets; ?>js/scripts.min.js?<?=rand(9999,999999)?>"></script>
 <script type="text/javascript">
     var m = '<?= $m; ?>', v = '<?= $v; ?>', products = {}, filters = <?= isset($filters) && !empty($filters) ? json_encode($filters) : '{}'; ?>, shop_color, shop_grid, sorting;
 

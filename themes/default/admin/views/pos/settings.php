@@ -446,6 +446,7 @@
 
 <script type="text/javascript">
     $(document).ready(function (e) {
+		alert()
         $("#order_printers").select2().select2('val', <?= $pos->order_printers; ?>);
         if ($('#remote_printing').val() == 1) {
             $('.printers').slideUp();

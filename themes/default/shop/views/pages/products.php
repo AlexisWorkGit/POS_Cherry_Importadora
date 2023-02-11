@@ -93,6 +93,7 @@
                         */ ?>
 
                         <?php
+						
                         if ($side_featured) {
                             ?>
                             <h4 class="margin-top-md title text-bold">

@@ -1,7 +1,9 @@
 $(document).ready(function () {
+
     $('body a, body button').attr('tabindex', -1);
     check_add_item_val();
     $(document).on('keypress', '.rquantity', function (e) {
+
         if (e.keyCode == 13) {
             $('#add_item').focus();
         }
@@ -1075,7 +1077,7 @@ $(document).ready(function () {
     });
 
     /* --------------------------
-     * Edit Row Quantity Method
+     * Edit Row Quantity Method editar
     --------------------------- */
     var old_row_qty;
     $(document)
@@ -1083,6 +1085,7 @@ $(document).ready(function () {
             old_row_qty = $(this).val();
         })
         .on('change', '.rquantity', function () {
+			
             var row = $(this).closest('tr');
             if (!is_numeric($(this).val()) || parseFloat($(this).val()) < 0) {
                 $(this).val(old_row_qty);
@@ -1092,6 +1095,7 @@ $(document).ready(function () {
             var new_qty = parseFloat($(this).val()),
                 item_id = row.attr('data-item-id');
             positems[item_id].row.base_quantity = new_qty;
+			
             if (positems[item_id].row.unit != positems[item_id].row.base_unit) {
                 $.each(positems[item_id].units, function () {
                     if (this.id == positems[item_id].row.unit) {
@@ -1100,6 +1104,7 @@ $(document).ready(function () {
                 });
             }
             positems[item_id].row.qty = new_qty;
+
             localStorage.setItem('positems', JSON.stringify(positems));
             loadItems();
         });
@@ -1113,6 +1118,7 @@ $(document).ready(function () {
 
 //localStorage.clear();
 function loadItems() {
+	console.log('cargar items')
     if (localStorage.getItem('positems')) {
         total = 0;
         count = 1;
@@ -1180,7 +1186,9 @@ function loadItems() {
             print_cate = false;
         // var itn = parseInt(Object.keys(sortedItems).length);
         $.each(sortedItems, function () {
+
             var item = this;
+					
             var item_id = site.settings.item_addition == 1 ? item.item_id : item.id;
             positems[item_id] = item;
             item.order = item.order ? item.order : new Date().getTime();
@@ -1188,6 +1196,9 @@ function loadItems() {
                 item_type = item.row.type,
                 combo_items = item.combo_items,
                 item_price = item.row.price,
+                item_price2 = item.row.price2,
+                item_price3 = item.row.price3,
+                item_price4 = item.row.price4,
                 item_qty = item.row.qty,
                 item_aqty = item.row.quantity,
                 item_tax_method = item.row.tax_method,
@@ -1199,13 +1210,34 @@ function loadItems() {
                 item_name = item.row.name.replace(/"/g, '&#034;').replace(/'/g, '&#039;');
             var product_unit = item.row.unit,
                 base_quantity = item.row.base_quantity;
+				
+			if(item_qty>=1 && item_qty<=2){	
+			
             var unit_price = item.row.real_unit_price;
+			}
+			if(item_qty>=3 && item_qty<=5){
+				
+				var unit_price = item_price2;
+			}
+			
+			if(item_qty>=6 && item_qty<=11){
+				
+				var unit_price = item_price3;
+			}
+			
+			if(item_qty>=12){
+			
+				var unit_price = item_price4;
+			}
+			console.log('ahora unit price es-->'+unit_price);			
             var item_comment = item.row.comment ? item.row.comment : '';
             var item_ordered = item.row.ordered ? item.row.ordered : 0;
+
             if (item.units && item.row.fup != 1 && product_unit != item.row.base_unit) {
                 $.each(item.units, function () {
                     if (this.id == product_unit) {
                         base_quantity = formatDecimal(unitToBaseQty(item.row.qty, this), 4);
+
                         unit_price = formatDecimal(parseFloat(item.row.base_unit_price) * unitToBaseQty(1, this), 4);
                     }
                 });
@@ -1238,6 +1270,7 @@ function loadItems() {
             product_discount += formatDecimal(item_discount * item_qty);
 
             unit_price = formatDecimal(unit_price - item_discount);
+
             var pr_tax = item.tax_rate;
             var pr_tax_val = 0,
                 pr_tax_rate = 0;

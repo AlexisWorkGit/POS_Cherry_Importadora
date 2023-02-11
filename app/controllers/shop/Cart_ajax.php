@@ -22,8 +22,25 @@ class Cart_ajax extends MY_Shop_Controller
     {
         if ($this->input->is_ajax_request() || $this->input->post('quantity')) {
             $product = $this->shop_model->getProductForCart($product_id);
+
+
             $options = $this->shop_model->getProductVariants($product_id);
-            $price   = $this->sma->setCustomerGroupPrice((isset($product->special_price) && !empty($product->special_price) ? $product->special_price : $product->price), $this->customer_group);
+			$qty=$this->input->get('qty');
+			$precio_aplicado=$product->price;
+			if($qty>=3 and $qty<=5){
+				$precio_aplicado=$product->price2;
+			}
+			
+			if($qty>=6 and $qty<=11){
+				$precio_aplicado=$product->price3;
+			}
+			
+			if($qty>=11){
+				$precio_aplicado=$product->price4;
+			}
+			
+            //$price   = $this->sma->setCustomerGroupPrice((isset($product->special_price) && !empty($product->special_price) ? $product->special_price : $product->price), $this->customer_group);
+            $price   = $this->sma->setCustomerGroupPrice((isset($product->special_price) && !empty($product->special_price) ? $product->special_price : $precio_aplicado), $this->customer_group);
             $price   = $this->sma->isPromo($product) ? $product->promo_price : $price;
             $option  = false;
             if (!empty($options)) {
@@ -125,6 +142,7 @@ class Cart_ajax extends MY_Shop_Controller
 
     public function index()
     {
+
         $this->session->set_userdata('requested_page', $this->uri->uri_string());
         if ($this->cart->total_items() < 1) {
             $this->session->set_flashdata('reminder', lang('cart_is_empty'));
@@ -164,6 +182,7 @@ class Cart_ajax extends MY_Shop_Controller
 
     public function update($data = null)
     {
+
         if (is_array($data)) {
             return $this->cart->update($data);
         }
@@ -173,7 +192,23 @@ class Cart_ajax extends MY_Shop_Controller
                 // $product = $this->site->getProductByID($item['product_id']);
                 $product = $this->shop_model->getProductForCart($item['product_id']);
                 $options = $this->shop_model->getProductVariants($product->id);
-                $price   = $this->sma->setCustomerGroupPrice((isset($product->special_price) ? $product->special_price : $product->price), $this->customer_group);
+				
+				$qty=$this->input->post('qty');
+			$precio_aplicado=$product->price;
+			if($qty>=3 and $qty<=5){
+				$precio_aplicado=$product->price2;
+			}
+			
+			if($qty>=6 and $qty<=11){
+				$precio_aplicado=$product->price3;
+			}
+			
+			if($qty>=11){
+				$precio_aplicado=$product->price4;
+			}
+				
+                //$price   = $this->sma->setCustomerGroupPrice((isset($product->special_price) ? $product->special_price : $product->price), $this->customer_group);
+                $price   = $this->sma->setCustomerGroupPrice((isset($product->special_price) ? $product->special_price : $precio_aplicado), $this->customer_group);
                 $price   = $this->sma->isPromo($product) ? $product->promo_price : $price;
                 // $price = $this->sma->isPromo($product) ? $product->promo_price : $product->price;
                 if ($option = $this->input->post('option')) {

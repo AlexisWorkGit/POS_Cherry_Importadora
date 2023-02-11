@@ -396,7 +396,10 @@ class Shop_model extends CI_Model
 
     public function getProducts($filters = [])
     {
-        $this->db->select("{$this->db->dbprefix('products')}.id as id, {$this->db->dbprefix('products')}.name as name, {$this->db->dbprefix('products')}.code as code, {$this->db->dbprefix('products')}.image as image, {$this->db->dbprefix('products')}.slug as slug, {$this->db->dbprefix('products')}.price, {$this->db->dbprefix('warehouses_products')}.quantity as quantity, type, promotion, promo_price, start_date, end_date, product_details as details")
+        $this->db->select("{$this->db->dbprefix('products')}.id as id, {$this->db->dbprefix('products')}.name as name, 
+		{$this->db->dbprefix('products')}.code as code, {$this->db->dbprefix('products')}.image as image, 
+		{$this->db->dbprefix('products')}.slug as slug, {$this->db->dbprefix('products')}.price, price2,price3,price4,pricelocal,
+		{$this->db->dbprefix('warehouses_products')}.quantity as quantity, type, promotion, promo_price, start_date, end_date, product_details as details")
         ->from('products')
         ->join('warehouses_products', 'products.id=warehouses_products.product_id', 'left')
         ->where('warehouses_products.warehouse_id', $this->shop_settings->warehouse)

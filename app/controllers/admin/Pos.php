@@ -229,6 +229,7 @@ class Pos extends MY_Controller
 
     public function ajaxproducts($category_id = null, $brand_id = null)
     {
+
         $this->sma->checkPermissions('index');
         if ($this->input->get('brand_id')) {
             $brand_id = $this->input->get('brand_id');
@@ -556,6 +557,7 @@ class Pos extends MY_Controller
         $customer_group = $this->site->getCustomerGroupByID($customer->customer_group_id);
         $row            = $this->pos_model->getWHProduct($code, $warehouse_id);
         $option         = false;
+
         if ($row) {
             unset($row->cost, $row->details, $row->product_details, $row->image, $row->barcode_symbology, $row->cf1, $row->cf2, $row->cf3, $row->cf4, $row->cf5, $row->cf6, $row->supplier1price, $row->supplier2price, $row->cfsupplier3price, $row->supplier4price, $row->supplier5price, $row->supplier1, $row->supplier2, $row->supplier3, $row->supplier4, $row->supplier5, $row->supplier1_part_no, $row->supplier2_part_no, $row->supplier3_part_no, $row->supplier4_part_no, $row->supplier5_part_no);
             $row->item_tax_method = $row->tax_method;
@@ -575,6 +577,7 @@ class Pos extends MY_Controller
             $row->option   = $option;
             $row->quantity = 0;
             $pis           = $this->site->getPurchasedItems($row->id, $warehouse_id, $row->option);
+			
             if ($pis) {
                 foreach ($pis as $pi) {
                     $row->quantity += $pi->quantity_balance;

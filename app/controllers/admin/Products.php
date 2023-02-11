@@ -27,6 +27,7 @@ class Products extends MY_Controller
 
     public function add($id = null)
     {
+
         $this->sma->checkPermissions();
         $this->load->helper('security');
         $warehouses = $this->site->getAllWarehouses();
